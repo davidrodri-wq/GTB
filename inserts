@@ -1,0 +1,99 @@
+USE gestion_sensores;
+
+-- =========================
+-- EDIFICIOS
+-- =========================
+INSERT INTO edificio (nombre) VALUES 
+('Edificio A'),
+('Edificio B');
+
+-- =========================
+-- PLANTAS
+-- =========================
+INSERT INTO planta (nombre, id_edificio) VALUES
+('Planta 1', 1),
+('Planta 2', 1),
+('Planta 1', 2);
+
+-- =========================
+-- ESPACIOS
+-- =========================
+INSERT INTO espacio (nombre, id_planta) VALUES
+('Aula 101', 1),
+('Laboratorio 102', 1),
+('Oficina 201', 2),
+('Sala Reuniones', 3);
+
+-- =========================
+-- MODELOS
+-- =========================
+INSERT INTO modelo (modelo, nombre, marca, bateria) VALUES
+('T1000', 'Sensor Temp Pro', 'SensTech', '3000mAh'),
+('H2000', 'Sensor Humedad Plus', 'ClimateCorp', '2500mAh'),
+('MULTI-X', 'Sensor Multivariable', 'SmartSense', '4000mAh');
+
+-- =========================
+-- TIPOS DE MEDICIÓN
+-- =========================
+INSERT INTO tipo_medicion (nombre) VALUES
+('Temperatura'),
+('Humedad'),
+('Luminosidad'),
+('Presencia');
+
+-- =========================
+-- SENSORES
+-- =========================
+INSERT INTO sensor (fecha_instalacion, estado, id_espacio, id_modelo) VALUES
+('2024-01-10', 'Activo', 1, 1),
+('2024-02-15', 'Activo', 2, 3),
+('2024-03-01', 'Mantenimiento', 3, 2);
+
+-- =========================
+-- RELACIÓN SENSOR - TIPO_MEDICION (M:N)
+-- =========================
+INSERT INTO sensor_tipo_medicion (id_sensor, id_tipo_medicion) VALUES
+(1, 1), -- Sensor 1 mide temperatura
+(2, 1), -- Sensor 2 mide temperatura
+(2, 2), -- Sensor 2 mide humedad
+(2, 3), -- Sensor 2 mide luminosidad
+(3, 2); -- Sensor 3 mide humedad
+
+-- =========================
+-- LECTURAS DE BATERÍA
+-- =========================
+INSERT INTO lectura_bateria (valor, fecha, id_sensor) VALUES
+(95.5, '2025-01-10 08:00:00', 1),
+(88.0, '2025-01-10 08:05:00', 2),
+(76.3, '2025-01-10 08:10:00', 3);
+
+-- =========================
+-- LECTURAS (SUPERCLASE)
+-- =========================
+INSERT INTO lecturas (fecha, id_sensor) VALUES
+('2025-01-10 09:00:00', 1), -- id 1
+('2025-01-10 09:05:00', 2), -- id 2
+('2025-01-10 09:10:00', 2), -- id 3
+('2025-01-10 09:15:00', 3); -- id 4
+
+-- =========================
+-- SUBCLASES
+-- =========================
+
+-- Temperatura
+INSERT INTO temper (id, valor) VALUES
+(1, 22.5),
+(2, 23.1);
+
+-- Humedad
+INSERT INTO humedad (id, valor) VALUES
+(3, 45.7),
+(4, 55.2);
+
+-- Luminosidad
+INSERT INTO luminosidad (id, valor) VALUES
+(2, 350.0);
+
+-- Presencia
+INSERT INTO presencia (id, valor) VALUES
+(3, 1.0);

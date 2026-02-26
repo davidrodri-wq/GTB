@@ -1,0 +1,130 @@
+USE gestion_sensores;
+
+-- 1. Sensores cuya última batería registrada es menor a 80
+SELECT s.id, s.estado
+FROM sensor s
+WHERE (
+    SELECT lb.valor
+    FROM lectura_bateria lb
+    WHERE lb.id_sensor = s.id
+    ORDER BY lb.fecha DESC
+    LIMIT 1
+) < 80;
+
+
+-- 2. Sensores que tienen más lecturas que la media de lecturas por sensor
+SELECT s.id
+FROM sensor s
+WHERE (
+    SELECT COUNT(*)
+    FROM lecturas l
+    WHERE l.id_sensor = s.id
+) > (
+    SELECT AVG(total)
+    FROM (
+        SELECT COUNT(*) AS total
+        FROM lecturas
+        GROUP BY id_sensor
+    ) t
+);
+
+
+-- 3. Edificios que tienen más sensores que cualquier otro edificio
+SELECT ed.nombre
+FROM edificio ed
+WHERE (
+    SELECT COUNT(*)
+    FROM sensor s
+    JOIN espacio e ON s.id_espacio = e.id
+    JOIN planta p ON e.id_planta = p.id
+    WHERE p.id_edificio = ed.id
+) = (
+    SELECT MAX(total_sensores)
+    FROM (
+        SELECT COUNT(*) AS total_sensores
+        FROM sensor s
+        JOIN espacio e ON s.id_espacio = e.id
+        JOIN planta p ON e.id_planta = p.id
+        GROUP BY p.id_edificio
+    ) t
+);
+
+
+-- 4. Sensores cuya temperatura media es superior a la media global de temperatura
+SELECT s.id
+FROM sensor s
+WHERE (
+    SELECT AVG(t.valor)
+    FROM lecturas l
+    JOIN temper t ON l.id = t.id
+    WHERE l.id_sensor = s.id
+) > (
+    SELECT AVG(valor)
+    FROM temper
+);
+
+
+-- 5. Espacios que tienen al menos un sensor inactivo
+SELECT e.nombre
+FROM espacio e
+WHERE EXISTS (
+    SELECT 1
+    FROM sensor s
+    WHERE s.id_espacio = e.id
+    AND s.estado = 'Inactivo'
+);
+
+
+-- 6. Sensores cuya última lectura es de tipo humedad
+SELECT s.id
+FROM sensor s
+WHERE EXISTS (
+    SELECT 1
+    FROM lecturas l
+    JOIN humedad h ON l.id = h.id
+    WHERE l.id_sensor = s.id
+    AND l.fecha = (
+        SELECT MAX(l2.fecha)
+        FROM lecturas l2
+        WHERE l2.id_sensor = s.id
+    )
+);
+
+
+-- 7. Sensores cuya batería actual es menor que la de cualquier otro sensor
+SELECT s.id
+FROM sensor s
+WHERE (
+    SELECT lb.valor
+    FROM lectura_bateria lb
+    WHERE lb.id_sensor = s.id
+    ORDER BY lb.fecha DESC
+    LIMIT 1
+) < ALL (
+    SELECT (
+        SELECT lb2.valor
+        FROM lectura_bateria lb2
+        WHERE lb2.id_sensor = s2.id
+        ORDER BY lb2.fecha DESC
+        LIMIT 1
+    )
+    FROM sensor s2
+    WHERE s2.id <> s.id
+);
+
+
+-- 8. Sensores que miden más tipos que la media de tipos por sensor
+SELECT s.id
+FROM sensor s
+WHERE (
+    SELECT COUNT(*)
+    FROM sensor_tipo_medicion stm
+    WHERE stm.id_sensor = s.id
+) > (
+    SELECT AVG(total_tipos)
+    FROM (
+        SELECT COUNT(*) AS total_tipos
+        FROM sensor_tipo_medicion
+        GROUP BY id_sensor
+    ) t
+);

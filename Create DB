@@ -1,0 +1,148 @@
+-- Crear base de datos
+CREATE DATABASE IF NOT EXISTS gestion_sensores;
+USE gestion_sensores;
+
+-- =========================
+-- TABLAS PRINCIPALES
+-- =========================
+
+CREATE TABLE edificio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE planta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    id_edificio INT NOT NULL,
+    CONSTRAINT fk_planta_edificio
+        FOREIGN KEY (id_edificio) REFERENCES edificio(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE espacio (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    id_planta INT NOT NULL,
+    CONSTRAINT fk_espacio_planta
+        FOREIGN KEY (id_planta) REFERENCES planta(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE modelo (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    modelo VARCHAR(100),
+    nombre VARCHAR(100),
+    marca VARCHAR(100),
+    bateria VARCHAR(50)
+);
+
+CREATE TABLE tipo_medicion (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE sensor (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_instalacion DATE,
+    estado VARCHAR(50),
+    id_espacio INT NOT NULL,
+    id_modelo INT NOT NULL,
+    CONSTRAINT fk_sensor_espacio
+        FOREIGN KEY (id_espacio) REFERENCES espacio(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_sensor_modelo
+        FOREIGN KEY (id_modelo) REFERENCES modelo(id)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- RELACIÓN M:N
+-- =========================
+
+CREATE TABLE sensor_tipo_medicion (
+    id_sensor INT NOT NULL,
+    id_tipo_medicion INT NOT NULL,
+    PRIMARY KEY (id_sensor, id_tipo_medicion),
+    CONSTRAINT fk_stm_sensor
+        FOREIGN KEY (id_sensor) REFERENCES sensor(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_stm_tipo
+        FOREIGN KEY (id_tipo_medicion) REFERENCES tipo_medicion(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- LECTURAS DE BATERÍA
+-- =========================
+
+CREATE TABLE lectura_bateria (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    valor DECIMAL(5,2) NOT NULL,
+    fecha DATETIME NOT NULL,
+    id_sensor INT NOT NULL,
+    CONSTRAINT fk_lb_sensor
+        FOREIGN KEY (id_sensor) REFERENCES sensor(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- LECTURAS (SUPERCLASE)
+-- =========================
+
+CREATE TABLE lecturas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    fecha DATETIME NOT NULL,
+    id_sensor INT NOT NULL,
+    CONSTRAINT fk_lectura_sensor
+        FOREIGN KEY (id_sensor) REFERENCES sensor(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+-- =========================
+-- SUBCLASES DE LECTURAS
+-- =========================
+
+CREATE TABLE temper (
+    id INT PRIMARY KEY,
+    valor DECIMAL(8,2) NOT NULL,
+    CONSTRAINT fk_temper_lectura
+        FOREIGN KEY (id) REFERENCES lecturas(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE humedad (
+    id INT PRIMARY KEY,
+    valor DECIMAL(8,2) NOT NULL,
+    CONSTRAINT fk_humedad_lectura
+        FOREIGN KEY (id) REFERENCES lecturas(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE luminosidad (
+    id INT PRIMARY KEY,
+    valor DECIMAL(8,2) NOT NULL,
+    CONSTRAINT fk_luminosidad_lectura
+        FOREIGN KEY (id) REFERENCES lecturas(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);
+
+CREATE TABLE presencia (
+    id INT PRIMARY KEY,
+    valor DECIMAL(8,2) NOT NULL,
+    CONSTRAINT fk_presencia_lectura
+        FOREIGN KEY (id) REFERENCES lecturas(id)
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+);

@@ -1,1 +1,107 @@
-SELECT * FROM usuarios;
+<-- Listar todos los sensores con su espacio, planta y edificio
+
+SELECT s.id AS sensor_id,
+       s.estado,
+       e.nombre AS espacio,
+       p.nombre AS planta,
+       ed.nombre AS edificio
+FROM sensor s
+JOIN espacio e ON s.id_espacio = e.id
+JOIN planta p ON e.id_planta = p.id
+JOIN edificio ed ON p.id_edificio = ed.id;
+
+<-- Sensores activos
+
+SELECT *
+FROM sensor
+WHERE estado = 'Activo';
+
+<-- Lecturas de batería menores al 80%
+
+SELECT *
+FROM lectura_bateria
+WHERE valor < 80;
+
+<-- CONSULTAS INTERMEDIAS
+<-- Número de sensores por edificio
+
+SELECT ed.nombre AS edificio,
+       COUNT(s.id) AS total_sensores
+FROM edificio ed
+JOIN planta p ON ed.id = p.id_edificio
+JOIN espacio e ON p.id = e.id_planta
+JOIN sensor s ON e.id = s.id_espacio
+GROUP BY ed.nombre;
+
+<-- Media de temperatura por sensor
+
+SELECT s.id AS sensor,
+       AVG(t.valor) AS media_temperatura
+FROM sensor s
+JOIN lecturas l ON s.id = l.id_sensor
+JOIN temper t ON l.id = t.id
+GROUP BY s.id;
+
+<-- Última lectura de batería por sensor
+
+SELECT lb.id_sensor,
+       MAX(lb.fecha) AS ultima_fecha
+FROM lectura_bateria lb
+GROUP BY lb.id_sensor;
+
+<-- CONSULTAS MÁS AVANZADAS (tipo examen)
+<-- Sensores que miden más de un tipo de medición
+
+SELECT id_sensor,
+       COUNT(id_tipo_medicion) AS total_tipos
+FROM sensor_tipo_medicion
+GROUP BY id_sensor
+HAVING COUNT(id_tipo_medicion) > 1;
+
+<-- Sensor con más lecturas registradas
+
+SELECT id_sensor,
+       COUNT(*) AS total_lecturas
+FROM lecturas
+GROUP BY id_sensor
+ORDER BY total_lecturas DESC
+LIMIT 1;
+
+<-- Promedio de humedad por edificio
+
+SELECT ed.nombre AS edificio,
+       AVG(h.valor) AS promedio_humedad
+FROM humedad h
+JOIN lecturas l ON h.id = l.id
+JOIN sensor s ON l.id_sensor = s.id
+JOIN espacio e ON s.id_espacio = e.id
+JOIN planta p ON e.id_planta = p.id
+JOIN edificio ed ON p.id_edificio = ed.id
+GROUP BY ed.nombre;
+
+<-- Sensores con batería por debajo de la media global
+
+SELECT id_sensor, valor
+FROM lectura_bateria
+WHERE valor < (SELECT AVG(valor) FROM lectura_bateria);
+
+<-- CONSULTAS EXTRA INTERESANTES
+
+<-- Sensores que no tienen lecturas
+
+SELECT s.id
+FROM sensor s
+LEFT JOIN lecturas l ON s.id = l.id_sensor
+WHERE l.id IS NULL;
+
+<--  Espacio con mayor temperatura registrada
+
+SELECT e.nombre,
+       MAX(t.valor) AS max_temp
+FROM temper t
+JOIN lecturas l ON t.id = l.id
+JOIN sensor s ON l.id_sensor = s.id
+JOIN espacio e ON s.id_espacio = e.id
+GROUP BY e.nombre
+ORDER BY max_temp DESC
+LIMIT 1;

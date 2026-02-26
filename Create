@@ -1,0 +1,13 @@
+CREATE DATABASE ejemplo_db;
+USE ejemplo_db;
+-- Crear tabla
+CREATE TABLE usuarios (
+ id INT AUTO_INCREMENT PRIMARY KEY,
+ nombre VARCHAR(50),
+ email VARCHAR(100) 
+ );
+ -- Insertar 3 filas de datos 
+ INSERT INTO usuarios (nombre, email) VALUES 
+ ('Ana Pérez', 'ana.perez@example.com'),
+ ('Luis Gómez', 'luis.gomez@example.com'),
+ ('María López', 'maria.lopez@example.com');

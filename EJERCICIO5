@@ -1,2 +1,4 @@
 -- Ejercicio 5: lectura registrada más antigua
 
+SELECT MIN(fecha)
+    FROM lecturas;

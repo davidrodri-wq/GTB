@@ -1,0 +1,2 @@
+-- Ejercicio 1: Valor medio de la batería de los sensores
+SELECT bateria FROM sensores;

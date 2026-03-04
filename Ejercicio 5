@@ -1,0 +1,5 @@
+-- Ejercicio 5: lectura registrada más antigua
+SELECT *
+FROM lecturas
+ORDER BY fecha ASC
+LIMIT 1;

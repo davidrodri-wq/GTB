@@ -1,1 +1,23 @@
+-- Ejercicio 1: Valor medio de la batería de los sensores
+select AVG(valor) as 'Valor medio' from lectura_bateria;
 
+-- Ejercicio 2: Sensores con batería por debajo de la media global
+select min(bateria) from modelo;
+
+-- Ejercicio 3: Mayor temperatura registrada
+select max(valor) from temper;
+
+-- Ejercicio 4: Última lectura registrada
+select fecha from lecturas order by fecha desc limit 1;
+
+-- Ejercicio 5: lectura registrada más antigua
+select fecha from lecturas order by fecha asc limit 1;
+
+-- Ejercicio 6: Posibles estados de los sensores (sin repetir) 
+select count(distinct estado) as 'estados' from sensor;
+
+-- Ejercicio 7: Cuántos sensores hay en cada estado
+select estado, count(id) AS total_sensores from sensor group by estado;
+
+-- Ejercicio 8: Qué estado tiene más de 3 sensores en ese estado
+select estado, count(*) from sensor group by estado having count(*) > 3;

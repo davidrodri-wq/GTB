@@ -1,0 +1,2 @@
+SELECT MAX(valor)
+FROM temper;

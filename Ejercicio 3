@@ -1,0 +1,1 @@
+SELECT MAX(temperatura) AS mayor_temperatura FROM sensores;

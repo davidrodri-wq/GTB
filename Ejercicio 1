@@ -1,1 +1,2 @@
-
+-- Ejercicio 1: Valor medio de la batería de los sensores
+select AVG(valor) as 'Valor medio' from lectura_bateria;

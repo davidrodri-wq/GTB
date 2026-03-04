@@ -1,5 +1,0 @@
--- Ejercicio 8: Qué estado tiene más de 3 sensores en ese estado
-SELECT estado, COUNT(*) AS total
-FROM sensor
-GROUP BY estado
-HAVING COUNT(*) > 3;

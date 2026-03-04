@@ -1,0 +1,2 @@
+-- Ejercicio 2: Sensores con batería por debajo de la media global
+select min(bateria) from modelo;

@@ -1,2 +1,5 @@
 -- Ejercicio 4: Última lectura registrada
-
+SELECT *
+FROM lecturas
+ORDER BY fecha DESC
+LIMIT 1;

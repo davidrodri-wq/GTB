@@ -1,2 +1,2 @@
 -- Ejercicio 3: Mayor temperatura registrada
-SELECT AVG temperatura FROM lecturas;
+SELECT AVG(temperatura) FROM lecturas;

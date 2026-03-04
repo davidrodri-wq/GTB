@@ -1,2 +1,2 @@
 -- Ejercicio 1: Valor medio de la batería de los sensores
-SELECT AVG bateria FROM sensores;
+SELECT AVG(bateria) FROM sensores;

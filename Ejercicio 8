@@ -1,0 +1,1 @@
+SELECT estado, COUNT(*) FROM sensor group by estado HAVING COUNT(*) >3;

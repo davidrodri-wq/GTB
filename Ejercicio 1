@@ -1,1 +1,1 @@
-
+SELECT AVG(bateria) AS media_bateria FROM sensores;

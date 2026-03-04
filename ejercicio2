@@ -1,0 +1,2 @@
+-- Ejercicio 2: Sensores con batería por debajo de la media global
+SELECT  id_sensor, valor FROM lectura_bateria WHERE valor < (SELECT AVG(valor) FROM lectura_bateria);

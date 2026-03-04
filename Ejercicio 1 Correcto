@@ -20,4 +20,4 @@ select count(distinct estado) as 'estados' from sensor;
 select estado, count(id) AS total_sensores from sensor group by estado;
 
 -- Ejercicio 8: Qué estado tiene más de 3 sensores en ese estado
-select estado, count(*) from sensor group by estado having count(*) > 3;
+select estado, count(*) as sensores from sensor group by estado having count(*) > 3;

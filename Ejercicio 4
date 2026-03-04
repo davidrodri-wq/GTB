@@ -1,0 +1,2 @@
+SELECT MAX(fecha)
+FROM lecturas;

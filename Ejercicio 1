@@ -1,4 +1,0 @@
--- Ejercicio 1: Valor medio de la batería de los sensores
-SELECT AVG(valor) 
-AS media_bateria
-FROM lectura_bateria;

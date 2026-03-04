@@ -1,0 +1,4 @@
+SELECT estado, COUNT(*) AS total
+FROM sensor
+GROUP BY estado
+HAVING COUNT(*) > 3;

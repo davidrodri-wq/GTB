@@ -1,2 +1,2 @@
 -- Ejercicio 4: Última lectura registrada
-SELECT AVG(fecha) FROM lecturas; 
+SELECT MAX(fecha) FROM lecturas; 

@@ -1,1 +1,4 @@
-
+SELECT id_sensor,
+AVG(valor) AS bateria_media
+FROM lectura_bateria
+GROUP BY id_sensor;

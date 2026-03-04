@@ -1,0 +1,1 @@
+SELECT * FROM lecturas ORDER BY fecha ASC LIMIT 1;

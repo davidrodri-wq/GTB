@@ -1,0 +1,6 @@
+-- EJERCICIOS CONSULTAS RESUMEN --
+
+-- Ejercicio 1: Valor medio de la batería de los sensores --
+SELECT modelo, AVG(bateria) AS media
+FROM modelo
+GROUP BY modelo;

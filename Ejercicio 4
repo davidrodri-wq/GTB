@@ -1,0 +1,2 @@
+-- Ejercicio 4: Última lectura registrada
+select fecha from lecturas order by fecha desc limit 1;

@@ -1,0 +1,2 @@
+-- Ejercicio 4: Última lectura registrada
+SELCT MAX(fecha) FROM lecturas;

@@ -1,0 +1,4 @@
+-- Ejercicio 6: Posibles estados de los sensores (sin repetir) 
+SELECT DISTINCT estado
+FROM sensor;
+-- Ejercicio 

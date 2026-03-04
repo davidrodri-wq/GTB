@@ -1,0 +1,3 @@
+SELECT modelo,AVG(bateria) AS media
+FROM modelo
+GROUP BY modelo;

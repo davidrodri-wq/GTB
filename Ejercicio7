@@ -1,0 +1,2 @@
+SELECT estado, COUNT(*) FROM sensor 
+GROUP BY estado;

@@ -1,0 +1,2 @@
+SELECT DISTINCT estado FROM sensor 
+;

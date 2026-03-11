@@ -1,0 +1,1 @@
+SELECT COUNT(*) AS jugadores_sin_equipo FROM jugadores WHERE id_equipo IS NULL;

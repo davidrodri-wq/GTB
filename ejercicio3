@@ -1,0 +1,2 @@
+-- Ejercicio 3: Mayor temperatura registrada
+SELECT MAX(temperatura) FROM lecturas;

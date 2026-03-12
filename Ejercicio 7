@@ -1,0 +1,4 @@
+-- Ejercicio 7: Cuántos sensores hay en cada estado
+SELECT estado, COUNT(*) AS total
+FROM sensor
+GROUP BY estado;
